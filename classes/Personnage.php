@@ -13,6 +13,7 @@ class Personnage
     const PERSONNAGE_TUE = 2; // Constante renvoyée par la méthode `frapper` si on a tué le personnage en le frappant.
     const PERSONNAGE_FRAPPE = 3; // Constante renvoyée par la méthode `frapper` si on a bien frappé le personnage.
 
+    
     public function __construct(array $donnees)
     {
         $this->hydrate($donnees);

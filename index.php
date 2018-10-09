@@ -16,7 +16,7 @@ if (isset($_SESSION['perso'])) { // Si la session perso existe, on restaure l'ob
 
 if (isset($_POST['creer']) && isset($_POST['nom'])) { // Si on a voulu créer un personnage.
   $perso = new Personnage(['nom' => $_POST['nom']]); // On crée un nouveau personnage.
-  
+
   if (!$perso->nomValide()) {
       $message = 'Le nom choisi est invalide.';
       unset($perso);
@@ -40,11 +40,11 @@ if (isset($_POST['creer']) && isset($_POST['nom'])) { // Si on a voulu créer un
             $message = 'Le personnage que vous voulez frapper n\'existe pas !';
         } else {
             $persoAFrapper = $manager->get((int) $_GET['frapper']);
-      
+
             $retour = $perso->frapper($persoAFrapper); // On stocke dans $retour les éventuelles erreurs ou messages que renvoie la méthode frapper.
-      
+
             switch ($retour) {
-    
+
                 case Personnage::CEST_MOI:
                     $message = 'Mais... pourquoi voulez-vous vous frapper ???';
                 break;
@@ -80,7 +80,7 @@ if (isset($message)) { // On a un message à afficher ?
 
 if (isset($perso)) { // Si on utilise un personnage (nouveau ou pas). ?>
     <p><a href="?deconnexion=1">Déconnexion</a></p>
-    
+
     <fieldset>
       <legend>Mes informations</legend>
       <p>
@@ -88,7 +88,7 @@ if (isset($perso)) { // Si on utilise un personnage (nouveau ou pas). ?>
         Dégâts : <?= $perso->degats() ?>
       </p>
     </fieldset>
-    
+
     <fieldset>
       <legend>Qui frapper ?</legend>
       <p>
@@ -114,6 +114,16 @@ $persos = $manager->getList($perso->nom());
         <input type="submit" value="Utiliser ce personnage" name="utiliser" />
       </p>
     </form>
+    <ul>
+        <?php
+            $listnom = $manager->getList();
+            foreach ($listnom as $allcaracter) {
+                ?><li><?php
+            echo $allcaracter->nom();
+            ?></li><?php
+        }
+        ?>
+    </ul>
 <?php
 }
 ?>
