@@ -18,6 +18,8 @@ class PersonnagesManager
         $perso->hydrate([
           'id' => $this->_db->lastInsertId(),
           'degats' => 0,
+          'experience'=>0,
+          'level'=>1,
         ]);
     }
 
@@ -47,12 +49,12 @@ class PersonnagesManager
     public function get($info)
     {
         if (is_int($info)) {
-            $q = $this->_db->query('SELECT id, nom, degats FROM personnages WHERE id = '.$info);
+            $q = $this->_db->query('SELECT id, nom, degats, experience, level FROM personnages WHERE id = '.$info);
             $donnees = $q->fetch(PDO::FETCH_ASSOC);
 
             return new Personnage($donnees);
         } else {
-            $q = $this->_db->prepare('SELECT id, nom, degats FROM personnages WHERE nom = :nom');
+            $q = $this->_db->prepare('SELECT id, nom, degats, experience, level FROM personnages WHERE nom = :nom');
             $q->execute([':nom' => $info]);
 
             return new Personnage($q->fetch(PDO::FETCH_ASSOC));
@@ -63,7 +65,7 @@ class PersonnagesManager
     {
         $persos = [];
 
-        $sql = 'SELECT id, nom, degats FROM personnages WHERE 1=1 ';
+        $sql = 'SELECT id, nom, degats, experience, level FROM personnages WHERE 1=1 ';
 
         if($nom !== null) {
             $sql.='AND nom <> :nom ';
@@ -81,9 +83,12 @@ class PersonnagesManager
 
     public function update(Personnage $perso)
     {
-        $q = $this->_db->prepare('UPDATE personnages SET degats = :degats WHERE id = :id');
+        var_dump($perso->degats());
+        $q = $this->_db->prepare('UPDATE personnages SET degats = :degats AND experience = :experience AND level = :level WHERE id = :id');
 
         $q->bindValue(':degats', $perso->degats(), PDO::PARAM_INT);
+        $q->bindValue(':experience', $perso->experience(), PDO::PARAM_INT);
+        $q->bindValue(':level', $perso->level(), PDO::PARAM_INT);
         $q->bindValue(':id', $perso->id(), PDO::PARAM_INT);
 
         $q->execute();
