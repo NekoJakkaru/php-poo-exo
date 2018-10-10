@@ -100,7 +100,13 @@ $persos = $manager->getList($perso->nom());
     } else {
         foreach ($persos as $unPerso) {
             echo '<a href="?frapper=', $unPerso->id(), '">', htmlspecialchars($unPerso->nom()), '</a> (dégâts : ', $unPerso->degats(), ')<br />';
-        }
+            ?>
+            <div style="background:green;height:12px;width:100%">
+                <div style="background:red;height:12px;width:<?php echo $unPerso->degats() ?>%;">
+
+            </div>
+        </div>
+        <?php }
     } ?>
       </p>
     </fieldset>
